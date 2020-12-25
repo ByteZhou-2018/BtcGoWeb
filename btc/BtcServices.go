@@ -10,6 +10,9 @@ func GetBlockCount() (interface{}, error) {
 	if err != nil {
 		return "", err
 	}
+	//存入数据
+	//o := orm.NewOrm()
+	//o.Insert(&result.Result)
 	return result.Result, err
 }
 //比特币节点命令 getbestblockhash 的封装函数

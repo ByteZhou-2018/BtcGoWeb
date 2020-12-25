@@ -15,7 +15,7 @@ import (
 切换数据库，或者，进行事务处理，都会作用于这个 Ormer 对象，以及其进行的任何查询。
 
 所以：需要 切换数据库 和 事务处理 的话，不要使用全局保存的 Ormer 对象。
- */
+*/
 var Db *sql.DB
 
 //初始化连接mysql
@@ -50,7 +50,7 @@ func init() {
 
 	//3、通过orm.GetDB 方法 拿到db对象 给全局db对象赋值
 	o := orm.NewOrm()
-	err = o.Using("default")//默认使用 deault，但可以指定为其它数据库别名用以切换数据库
+	err = o.Using("default") //默认使用 deault，但可以指定为其它数据库别名用以切换数据库
 
 	//获取orm中注册的default *sql.Db
 	db, err := orm.GetDB("default")
@@ -61,17 +61,17 @@ func init() {
 	Db = db
 	//4、调试模式打印查询语句，可能存在性能问题，不建议用在产品模式
 	/*
-	默认使用 os.Stderr 输出日志信息
+		默认使用 os.Stderr 输出日志信息
 
-	改变输出到你自己的 io.Writer
+		改变输出到你自己的 io.Writer
 
 
-	var w io.Writer
-	...
-	// 设置为你的 io.Writer
-	...
-	orm.DebugLog = orm.NewLog(w)
-	 */
+		var w io.Writer
+		...
+		// 设置为你的 io.Writer
+		...
+		orm.DebugLog = orm.NewLog(w)
+	*/
 	orm.Debug = true
 	//
 	var w io.Writer
@@ -86,8 +86,43 @@ func init() {
 
 	orm.RegisterModel(new(User), new(Profile), new(Post))
 	将你定义的 Model 进行注册，最佳设计是有单独的 models.go 文件，在他的 init 函数中进行注册。
-	 */
+	*/
 }
 
+//第二种我们常用的数据库连接方式 sql.Open
+func ConnectMysqlDB() {
+	if Db != nil {
+		return
+	}
+	db, err := sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/btcweb?charset=utf8")
+	if err != nil {
+		log.Println(err.Error())
+	}
+	Db = db
+}
 
+//第二种方式的更改数据库操作，通过sql语句实现
+func ModifyDB(sql string, args ...interface{}) (int64, error) {
+	if Db == nil {
+		ConnectMysqlDB()
+	}
+	result, err := Db.Exec(sql, args...)
+	if err != nil {
+		return -1, err
+	}
+	id, err := result.RowsAffected()
+	if err != nil {
+		return -1, err
+	}
+	return id, nil
+}
+
+//查询操作
+func QueryRowDB(sql string)*sql.Row {
+	return Db.QueryRow(sql)
+
+}
+func QueryRowsDB(sql string)(*sql.Rows, error) {
+	return Db.Query(sql)
+}
 

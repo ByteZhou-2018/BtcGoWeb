@@ -21,7 +21,7 @@ method： 调用的具体命令
 parms：参数
 return 将rpc请求所需的数据打包并序列化为json格式
  */
-func GetBTCJsonStr(method string, parms []interface{}) string {
+func GetBTCJsonStr(method string, parms ...interface{}) string {
 	obj := new(moudles.BTCJson)
 	obj.Jsonrpc = "2.0"
 	obj.Id = strconv.FormatInt(time.Now().Unix(), 10)
@@ -65,6 +65,7 @@ func Excute(jsonStr string) (*moudles.BTCResult, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &rpcResult, nil
 }
 /*btc命令调用封装函数 命令 [参数1，参数2 ...]
@@ -73,7 +74,7 @@ func Excute(jsonStr string) (*moudles.BTCResult, error) {
 	return：比特币 Result
  */
 func GetMsgByCommand(method string, parms ...interface{}) (*moudles.BTCResult, error) {
-	jsonStr := GetBTCJsonStr(method, parms)
+	jsonStr := GetBTCJsonStr(method, parms...)
 	fmt.Println(jsonStr)
 	return Excute(jsonStr)
 }
