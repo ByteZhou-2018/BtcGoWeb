@@ -13,7 +13,7 @@ import (
 
 // 端口
 const (
-	HTTP_PORT  string = "80"
+	HTTP_PORT  string = "8006"
 	HTTPS_PORT string = "443"
 )
 
@@ -23,8 +23,8 @@ const (
 	DART_CLIENT_PATH  = "/js/"
 	IMAGE_CLIENT_PATH = "/image/"
 
-	CSS_SVR_PATH   = "web"
-	DART_SVR_PATH  = "web"
+	CSS_SVR_PATH   = "testAjax/web"
+	DART_SVR_PATH  = "testAjax/web"
 	IMAGE_SVR_PATH = "web"
 )
 
@@ -34,6 +34,7 @@ func init() {
 
 func main() {
 	// 先把css和脚本服务上去
+	//http.Handle("/a",http.FileServer(http.Dir("/a")))
 	http.Handle(CSS_CLIENT_PATH, http.FileServer(http.Dir(CSS_SVR_PATH)))
 	http.Handle(DART_CLIENT_PATH, http.FileServer(http.Dir(DART_SVR_PATH)))
 
@@ -63,7 +64,7 @@ func WriteTemplateToHttpResponse(res http.ResponseWriter, t *template.Template) 
 }
 
 func HomePage(res http.ResponseWriter, req *http.Request) {
-	t, err := template.ParseFiles("web/loli.html")
+	t, err := template.ParseFiles("testAjax/web/loli.html")
 	if err != nil {
 		fmt.Println(err)
 		return

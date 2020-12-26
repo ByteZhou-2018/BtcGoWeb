@@ -7,11 +7,13 @@ import (
 
 func init() {
 	//登录页面展示
-	beego.Router("/", &controllers.MainController{}, "GET:Login")
-	beego.Router("/login", &controllers.MainController{}, "GET:Login")
+	beego.Router("/", &controllers.UsersController{}, "GET:Login")
+	beego.Router("/login", &controllers.UsersController{}, "GET:Login")
+	//处理注册账号请求 进入登录页面
+	beego.Router("/login", &controllers.UsersController{}, "POST:ParseRegister")
 
 
-	//处理登录请求
+	//处理登录请求 进入主页
 	beego.Router("/home", &controllers.UsersController{}, "POST:LoginParseForm")
 	//beego.Router("/home", &controllers.MainController{}, "POST:LoginParseForm")
 

@@ -11,10 +11,7 @@ type MainController struct {
 	beego.Controller
 }
 
-//处理 http://localhost:8080/ 请求，返回登录页面展示
-func (c *MainController) Login() {
-	c.TplName = "Login.html"
-}
+
 
 
 func (c *MainController) Home() {

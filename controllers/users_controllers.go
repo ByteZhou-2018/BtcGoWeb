@@ -10,7 +10,12 @@ type UsersController struct {
 	beego.Controller
 }
 
-//处理 http://localhost:8080//home 请求，处理用户登录,用户名密码都匹配、登录到主页(比特币节点查询功能)
+//处理  http://localhost:8080/  http://localhost:8080/login 请求，返回登录页面展示
+func (this *UsersController) Login() {
+	this.TplName = "Login.html"
+}
+
+//处理 http://localhost:8080/home 请求，处理用户登录,用户名密码都匹配、登录到主页(比特币节点查询功能)
 func (this *UsersController) LoginParseForm() {
 	var u moudles.User
 	err := this.ParseForm(&u)
@@ -43,6 +48,26 @@ func (this *UsersController) LoginParseForm() {
 	//beego.Info("hello world !")
 	//c.Ctx.Input.Context.Output.Body([]byte("你好世界"))
 }
+
+//处理进入注册页面在请求  http://localhost:8080/register
 func (this *UsersController) Register() {
 	this.TplName = "Register.html"
+}
+func (this *UsersController) ParseRegister() {
+	var u moudles.User
+	err := this.ParseForm(&u)
+	if err != nil {
+		beeLogger.Log.Info(err.Error())
+		this.Ctx.WriteString("页面解析数据错误，请稍后重试！")
+		return
+	}
+	if u.Name == "" || u.Password == "" {
+		this.Ctx.WriteString("请输入用户名和密码")
+	}
+	beeLogger.Log.Info(u.Name + "     " + u.Password)
+	this.Data["username"] = u.Name
+	this.Data["password"] = u.Password
+	this.Ctx.ResponseWriter.Write([]byte(""))
+	this.Ctx.WriteString("")
+	this.TplName = "Login.html"
 }
