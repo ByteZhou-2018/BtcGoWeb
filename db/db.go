@@ -1,6 +1,7 @@
 package db
 
 import (
+	"BtcGoWeb/moudles"
 	"database/sql"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -47,6 +48,8 @@ func init() {
 		log.Println(err.Error())
 		return
 	}
+	//注册实体类模型
+	orm.RegisterModel(new(moudles.User))
 
 	//3、通过orm.GetDB 方法 拿到db对象 给全局db对象赋值
 	o := orm.NewOrm()
@@ -87,6 +90,9 @@ func init() {
 	orm.RegisterModel(new(User), new(Profile), new(Post))
 	将你定义的 Model 进行注册，最佳设计是有单独的 models.go 文件，在他的 init 函数中进行注册。
 	*/
+	//注册orm实体模型
+
+
 }
 
 //第二种我们常用的数据库连接方式 sql.Open

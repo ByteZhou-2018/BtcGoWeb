@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>比特币系统登录</title>
+		<link rel="icon" type="image/x-ico" href="../static/img/logoTitle.png"/>
+		<link rel="stylesheet" type="text/css" href="../static/css/loginstyle.css"/>
+	</head>
+	<body>
+		<div class="box">
+			<h2>Bitcoin System Login</h2>
+			<form action="/home" method="post">
+				<div class="inputBox">
+					<input type="text" name="username" required=""/>
+					<label>Username</label>
+				</div>
+				<div class="inputBox">
+					<input type="password" name="password" required=""/>
+					<label>Password</label>
+				</div>
+				
+				<input type="submit" value="Login"/>
+				<input type="reset" value="Reset"/>
+				<span id="getUsers">
+					还没有账号？<a  href="/register.html">点击注册</a>
+				</span>
+			</form>
+		</div>
+	</body>
+</html>

@@ -8,21 +8,26 @@ import (
 func init() {
 	//登录页面展示
 	beego.Router("/", &controllers.MainController{}, "GET:Login")
+	beego.Router("/login", &controllers.MainController{}, "GET:Login")
+
 
 	//处理登录请求
-	beego.Router("/login", &controllers.MainController{}, "POST:LoginParseForm")
+	beego.Router("/home", &controllers.UsersController{}, "POST:LoginParseForm")
+	//beego.Router("/home", &controllers.MainController{}, "POST:LoginParseForm")
 
-	//注册页面展示
-	beego.Router("/register.html", &controllers.MainController{}, "POST:LoginParseForm")
-	//处理register页面表单请求
-	beego.Router("/home.html", &controllers.MainController{}, "POST:Home")
 
-	//主页展示
-	beego.Router("/home", &controllers.MainController{}, "POST:HomeParseForm")
-	//主页数据处理
-	beego.Router("/register", &controllers.MainController{}, "POST:LoginParseForm")
-
-	beego.Router("/register", &controllers.MainController{}, "POST:LoginParseForm")
+	////注册页面展示
+	//beego.Router("/register.html", &controllers.MainController{}, "POST:LoginParseForm")
+	beego.Router("/register", &controllers.UsersController{}, "GET:Register")
+	////处理register页面表单请求
+	//beego.Router("/home.html", &controllers.MainController{}, "POST:Home")
+	//
+	////主页展示
+	//beego.Router("/home", &controllers.MainController{}, "POST:HomeParseForm")
+	////主页数据处理
+	//beego.Router("/register", &controllers.MainController{}, "POST:LoginParseForm")
+	//
+	//beego.Router("/register", &controllers.MainController{}, "POST:LoginParseForm")
 }
 
 //基础路由 get方式

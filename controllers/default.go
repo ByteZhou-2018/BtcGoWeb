@@ -13,7 +13,7 @@ type MainController struct {
 
 //处理 http://localhost:8080/ 请求，返回登录页面展示
 func (c *MainController) Login() {
-	c.TplName = "login.html"
+	c.TplName = "Login.html"
 }
 
 
