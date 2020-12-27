@@ -1,9 +1,13 @@
 package controllers
 
 import (
+	"BtcGoWeb/db"
 	"BtcGoWeb/moudles"
+	"encoding/json"
+	"fmt"
 	"github.com/astaxie/beego"
 	beeLogger "github.com/beego/bee/logger"
+	"time"
 )
 
 type UsersController struct {
@@ -63,11 +67,29 @@ func (this *UsersController) ParseRegister() {
 	}
 	if u.Name == "" || u.Password == "" {
 		this.Ctx.WriteString("请输入用户名和密码")
+		return
 	}
 	beeLogger.Log.Info(u.Name + "     " + u.Password)
-	this.Data["username"] = u.Name
-	this.Data["password"] = u.Password
-	this.Ctx.ResponseWriter.Write([]byte(""))
-	this.Ctx.WriteString("")
-	this.TplName = "Login.html"
+
+	//如果数据中已经该用户，提示：注册失败，用户已存在！
+	err = db.O.Raw("select * from user where user_name = ? ", u.Name).QueryRow(&u)
+	if err != nil {//没查到 注册用户， 插入数据库
+			//this.Ctx.WriteString(err.Error())
+		u.TimeStamp = time.Now().Unix()
+		u.Status = 0
+		_, err = db.O.Insert(&u)
+		if err != nil {
+			this.Ctx.WriteString("注册用户失败" + fmt.Sprint(err.Error()))
+			return
+		}
+		this.TplName = "Login.html"
+		return
+	}
+
+	bytes, _ := json.Marshal(&u)
+	this.Ctx.WriteString(string(bytes))
+
+	return
+
 }
+

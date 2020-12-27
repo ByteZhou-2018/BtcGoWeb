@@ -78,4 +78,11 @@ func HomePage(res http.ResponseWriter, req *http.Request) {
 
 func OnAjax(res http.ResponseWriter, req *http.Request) {
 	io.WriteString(res, "这是从后台发送的数据")
+	t,err := template.ParseFiles("testAjax/web/loli.html")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	err = t.Execute(res,nil)
+
 }

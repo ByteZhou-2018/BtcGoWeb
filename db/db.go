@@ -18,6 +18,7 @@ import (
 所以：需要 切换数据库 和 事务处理 的话，不要使用全局保存的 Ormer 对象。
 */
 var Db *sql.DB
+var O orm.Ormer
 
 //初始化连接mysql
 func init() {
@@ -52,8 +53,8 @@ func init() {
 	orm.RegisterModel(new(moudles.User))
 
 	//3、通过orm.GetDB 方法 拿到db对象 给全局db对象赋值
-	o := orm.NewOrm()
-	err = o.Using("default") //默认使用 deault，但可以指定为其它数据库别名用以切换数据库
+	O= orm.NewOrm()
+	err = O.Using("default") //默认使用 deault，但可以指定为其它数据库别名用以切换数据库
 
 	//获取orm中注册的default *sql.Db
 	db, err := orm.GetDB("default")
@@ -108,7 +109,7 @@ func ConnectMysqlDB() {
 }
 
 //第二种方式的更改数据库操作，通过sql语句实现
-func ModifyDB(sql string, args ...interface{}) (int64, error) {
+func ExecDB(sql string, args ...interface{}) (int64, error) {
 	if Db == nil {
 		ConnectMysqlDB()
 	}
